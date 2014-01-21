@@ -68,7 +68,7 @@ class CustomController extends Controller
                     $user->setImage($file['path'].'/'.$file['name']);
                     if ($userImg != null) {
 		        if (file_exists($userImg)) {
-                            unlink($filePath);
+                            unlink($userImg);
 		        }
                     }
                 } else {
