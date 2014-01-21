@@ -67,7 +67,9 @@ class CustomController extends Controller
                     $file = $this->get('cms.helper')->uploadFile($user->getImage(), $user->getUsername().'/avatar');
                     $user->setImage($file['path'].'/'.$file['name']);
                     if ($userImg != null) {
-                        unlink($userImg);
+		        if (file_exists($filePath) {
+                            unlink($filePath);
+		        }
                     }
                 } else {
                     $user->setImage($userImg);
@@ -193,7 +195,9 @@ class CustomController extends Controller
                 } catch (\Exception $e) {
                     return new Response(json_encode(array('status' => false, 'message' => 'Ошибка работы с базой.')), 500, array('Content-Type' => 'application/json'));
                 }
-                unlink($filePath);
+		if (file_exists($filePath) {
+                    unlink($filePath);
+		}
                 return new Response(json_encode(array('status' => true, 'message' => 'Файл успешно удалён.')), 200, array('Content-Type' => 'application/json'));
             } else {
                 return new Response(json_encode(array('status' => false, 'message' => 'Файл не существует.')), 500, array('Content-Type' => 'application/json'));
