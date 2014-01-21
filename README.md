@@ -11,8 +11,8 @@
 
 Установить composer:
 
->$ curl -sS https://getcomposer.org/installer | php
->$ mv composer.phar /usr/local/bin/composer
+1. $ curl -sS https://getcomposer.org/installer | php
+2. mv composer.phar /usr/local/bin/composer
 
 Дамп базы находится в папке INSTALL. Там же вы найдёте и файл диаграм MySql WorkBench.
 
