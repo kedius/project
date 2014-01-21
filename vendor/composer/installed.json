@@ -1363,68 +1363,6 @@
         ]
     },
     {
-        "name": "symfony/monolog-bundle",
-        "version": "v2.4.1",
-        "version_normalized": "2.4.1.0",
-        "target-dir": "Symfony/Bundle/MonologBundle",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/MonologBundle.git",
-            "reference": "e81c2e9c4dc0a9ff794674017069e036f575f278"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/e81c2e9c4dc0a9ff794674017069e036f575f278",
-            "reference": "e81c2e9c4dc0a9ff794674017069e036f575f278",
-            "shasum": ""
-        },
-        "require": {
-            "monolog/monolog": "~1.6",
-            "php": ">=5.3.2",
-            "symfony/config": "~2.3",
-            "symfony/dependency-injection": "~2.3",
-            "symfony/http-kernel": "~2.3",
-            "symfony/monolog-bridge": "~2.3"
-        },
-        "require-dev": {
-            "symfony/console": "~2.3",
-            "symfony/yaml": "~2.3"
-        },
-        "time": "2013-08-26 10:15:04",
-        "type": "symfony-bundle",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.4.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Bundle\\MonologBundle": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony MonologBundle",
-        "homepage": "http://symfony.com",
-        "keywords": [
-            "log",
-            "logging"
-        ]
-    },
-    {
         "name": "sensio/distribution-bundle",
         "version": "v2.3.4",
         "version_normalized": "2.3.4.0",
@@ -1577,6 +1515,68 @@
         ]
     },
     {
+        "name": "symfony/monolog-bundle",
+        "version": "v2.4.1",
+        "version_normalized": "2.4.1.0",
+        "target-dir": "Symfony/Bundle/MonologBundle",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/MonologBundle.git",
+            "reference": "e81c2e9c4dc0a9ff794674017069e036f575f278"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/e81c2e9c4dc0a9ff794674017069e036f575f278",
+            "reference": "e81c2e9c4dc0a9ff794674017069e036f575f278",
+            "shasum": ""
+        },
+        "require": {
+            "monolog/monolog": "~1.6",
+            "php": ">=5.3.2",
+            "symfony/config": "~2.3",
+            "symfony/dependency-injection": "~2.3",
+            "symfony/http-kernel": "~2.3",
+            "symfony/monolog-bridge": "~2.3"
+        },
+        "require-dev": {
+            "symfony/console": "~2.3",
+            "symfony/yaml": "~2.3"
+        },
+        "time": "2013-08-26 10:15:04",
+        "type": "symfony-bundle",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Bundle\\MonologBundle": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony MonologBundle",
+        "homepage": "http://symfony.com",
+        "keywords": [
+            "log",
+            "logging"
+        ]
+    },
+    {
         "name": "gedmo/doctrine-extensions",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -1656,70 +1656,6 @@
             "translatable",
             "tree",
             "uploadable"
-        ]
-    },
-    {
-        "name": "stof/doctrine-extensions-bundle",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "target-dir": "Stof/DoctrineExtensionsBundle",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-            "reference": "9da4489322c5442ff021c4cd3f28dd79b2a8df07"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/9da4489322c5442ff021c4cd3f28dd79b2a8df07",
-            "reference": "9da4489322c5442ff021c4cd3f28dd79b2a8df07",
-            "shasum": ""
-        },
-        "require": {
-            "gedmo/doctrine-extensions": "~2.3.1",
-            "php": ">=5.3.2",
-            "symfony/framework-bundle": "~2.1"
-        },
-        "suggest": {
-            "doctrine/doctrine-bundle": "to use the ORM extensions",
-            "doctrine/mongodb-odm-bundle": "to use the MongoDB ODM extensions"
-        },
-        "time": "2013-10-13 16:27:31",
-        "type": "symfony-bundle",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Stof\\DoctrineExtensionsBundle": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Christophe Coevoet",
-                "email": "stof@notk.org"
-            }
-        ],
-        "description": "Integration of the gedmo/doctrine-extensions with Symfony2",
-        "homepage": "https://github.com/stof/StofDoctrineExtensionsBundle",
-        "keywords": [
-            "behaviors",
-            "doctrine2",
-            "extensions",
-            "gedmo",
-            "loggable",
-            "nestedset",
-            "sluggable",
-            "sortable",
-            "timestampable",
-            "translatable",
-            "tree"
         ]
     },
     {
@@ -1844,6 +1780,70 @@
             "pager",
             "pagination",
             "paginator"
+        ]
+    },
+    {
+        "name": "stof/doctrine-extensions-bundle",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Stof/DoctrineExtensionsBundle",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
+            "reference": "9da4489322c5442ff021c4cd3f28dd79b2a8df07"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/9da4489322c5442ff021c4cd3f28dd79b2a8df07",
+            "reference": "9da4489322c5442ff021c4cd3f28dd79b2a8df07",
+            "shasum": ""
+        },
+        "require": {
+            "gedmo/doctrine-extensions": "~2.3.1",
+            "php": ">=5.3.2",
+            "symfony/framework-bundle": "~2.1"
+        },
+        "suggest": {
+            "doctrine/doctrine-bundle": "to use the ORM extensions",
+            "doctrine/mongodb-odm-bundle": "to use the MongoDB ODM extensions"
+        },
+        "time": "2013-10-13 16:27:31",
+        "type": "symfony-bundle",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Stof\\DoctrineExtensionsBundle": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Christophe Coevoet",
+                "email": "stof@notk.org"
+            }
+        ],
+        "description": "Integration of the gedmo/doctrine-extensions with Symfony2",
+        "homepage": "https://github.com/stof/StofDoctrineExtensionsBundle",
+        "keywords": [
+            "behaviors",
+            "doctrine2",
+            "extensions",
+            "gedmo",
+            "loggable",
+            "nestedset",
+            "sluggable",
+            "sortable",
+            "timestampable",
+            "translatable",
+            "tree"
         ]
     }
 ]
