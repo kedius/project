@@ -22,7 +22,7 @@ sudo composer install
 
 После выполнения комманды в файле app/config/parameters.yml указать параметры подключения к БД
 
-Далее следует дать права на запись папкам app/cache, app/logs
+Далее следует дать права на запись папкам app/cache, app/logs и web/uploads
 
 В браузере открыть фал web/app_dev.php либо web/app.php
 

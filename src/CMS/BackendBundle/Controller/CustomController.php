@@ -67,7 +67,7 @@ class CustomController extends Controller
                     $file = $this->get('cms.helper')->uploadFile($user->getImage(), $user->getUsername().'/avatar');
                     $user->setImage($file['path'].'/'.$file['name']);
                     if ($userImg != null) {
-		        if (file_exists($filePath)) {
+		        if (file_exists($userImg)) {
                             unlink($filePath);
 		        }
                     }
