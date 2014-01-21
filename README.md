@@ -30,6 +30,7 @@ sudo composer install
 ПОЛЬЗОВАТЕЛИ:
 =======================
 
+<pre>
 Пользователь:
   login:    user
   password: user
@@ -42,4 +43,5 @@ sudo composer install
 Администратор:
   login:    admin
   password: admin
+</pre>
 
