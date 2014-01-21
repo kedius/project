@@ -81,9 +81,9 @@
                                     Тэги:
                                         {% for tag in article.tags %}
                                             {% if loop.index < article.tags | length %}
-                                            <a href="{{ path('show_content_by_tag', {'tag': tag.name}) }}">{{ tag.name }}</a>,
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.id}) }}">{{ tag.name }}</a>,
                                             {% else %}
-                                            <a href="{{ path('show_content_by_tag', {'tag': tag.name}) }}">{{ tag.name }}</a>;
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.id}) }}">{{ tag.name }}</a>;
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
