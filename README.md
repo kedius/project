@@ -26,5 +26,20 @@ sudo composer install
 
 В браузере открыть фал web/app_dev.php либо web/app.php
 
-SOLVED
+
+ПОЛЬЗОВАТЕЛИ:
+=======================
+
+Пользователь:
+  login:    user
+  password: user
+Автор:
+  login:    author
+  password: author
+Издатель:
+  login:    publisher
+  password: publisher
+Администратор:
+  login:    admin
+  password: admin
 
