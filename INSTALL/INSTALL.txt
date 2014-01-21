@@ -1,8 +1,0 @@
-В файле app/config/parameters.yml указать параметры подключения к БД
-
-Дать права на запись папкам app/cache, app/logs
-
-В браузере открыть фал web/app_dev.php либо web/app.php
-
-SOLVED
-
