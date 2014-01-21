@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container col-xs-12 col-sm-12">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                    {% if app.user.image %}
+                        <img src="{{ asset(app.user.image) }}" class="avatar-img" />
+                    {% else %}
+                        <img src="{{ asset('uploads/no-avatar.gif') }}" alt="Нет аватара" class="avatar-img"/>
+                    {% endif %}
+                </div>
+                <div class="col-xs-12 col-sm-9 account-actions" style="padding-top:5px;">
+                    <strong>{{ app.user.username }}</strong>
+                    <div class="pull-right small"><span class="label label-warning user-rating">0</span></div><br/>
+                    {% if is_granted('ROLE_AUTHOR') or is_granted('ROLE_PUBLISHER') or is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('profile') }}">Панель управления</a> |
+                    {% else %}
+                        <a href="{{ path('edit_profile') }}">Редактировать профиль</a> |
+                    {% endif %}
+                    <a href="{{ path('_security_logout') }}">Выйти</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    {% if is_granted('ROLE_AUTHOR') %}
+                    <hr/><a href="{{ path('add_profile_content') }}" class="btn btn-success add-content">Добавить публикацию</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

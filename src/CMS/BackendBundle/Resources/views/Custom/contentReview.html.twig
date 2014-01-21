@@ -1,0 +1,112 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('cms/css/select2.css') }}"/>
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8 well">
+            <center><h2>Публикация материала/Добавление рецензии</h2></center><hr/>
+            <div class="row margin-bottom-5">
+
+                <div class="col-xs-12 col-sm-12">
+                    <h4>{{ content.title }}</h4>
+                </div>
+                <div class="col-xs-12 col-sm-12 small margin-bottom-10">
+                    Автор: {{ content.author.username }};
+                    Отправлено: {{ content.dateAt | date("d.m.Y H:i") }};
+                    Категория: <a href="{{ path('profile_content_reviewed_by_category', {'category': content.category.alias}) }}">{{ content.category.title }}</a>
+                </div>
+                <div class="col-xs-12 col-sm-12 padding-top-8">
+                    {{ content.text|raw }}
+                    {% if content.files|length > 0 %}
+                    <div class="padding-top-8"><strong>Вложения:</strong></div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="margin-bottom-0">
+                                {% for file in content.files %}
+                                <li><a href="{{ asset(file.filePath) ~ '/' ~ file.fileName }}">{{ file.fileName }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <hr/>
+            <form action="{{ path('profile_content_reviewed_save', {'contentAlias': content.alias}) }}" method="POST" class="padding-top-8">
+                <div class="row padding-top-8">
+                    <div class="col-xs-12 col-sm-3 text-right padding-top-8">
+                        {{ form_label(reviewForm.status) }}:
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        {{ form_widget(reviewForm.status) }}
+                    </div>
+                </div><br/>
+                <div class="row padding-top-8">
+                    <div class="col-xs-12 col-sm-3 text-right padding-top-8">
+                        {{ form_label(reviewForm.tags) }}:
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        {% if content is defined and content.tags|length > 0 %}
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <ul class="nav nav-pills">
+                                        {% for tag in content.tags %}
+                                            <li><a href="#">{{ tag.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {{ form_widget(reviewForm.tags) }}
+                        <input type="hidden" name="reviewTags" style="width:100%" id="reviewTags" />
+                    </div>
+                </div><br/>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3 text-right padding-top-8">
+                        {{ form_label(reviewForm.review) }}:
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        {{ form_widget(reviewForm.review) }}
+                    </div>
+                </div><br/>
+                <div class="row text-center">
+                    {{ form_widget(reviewForm._token) }}
+                    <input type="submit" class="btn btn-primary" value="Опубликовать"/>
+                    <a href="{{ path('profile_content') }}" class="btn btn-danger">Назад</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-sm-2"></div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('cms/js/select2.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var tagsList = (function() {
+                var tags = [];
+                $("#cms_backendbundle_content_tags option").each(function() {
+                    tags.push({id: $(this).val(), text: $(this).text()});
+                })
+                return tags;
+            })();
+            $('#cms_backendbundle_content_tags').hide();
+            $("#reviewTags").select2({
+                createSearchChoice:function(term, data) {
+                    if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length===0) {
+                        return {id:term, text:term};
+                    }
+                },
+                data: tagsList,
+                multiple: true
+            });
+            var tagExist = [{% if content.tags|length > 0 %}{% for tag in content.tags %}{{ tag.id }}{% if loop.index < content.tags|length %},{% endif %}{% endfor %}{% endif %}];
+            for (i in tagExist) { $('#cms_backendbundle_content_tags option[value="'+tagExist[i]+'"]').attr('selected', true); }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('cms/css/select2.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('cms/css/elrte.min.css') }}" type="text/css" media="screen" charset="utf-8">
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8 well">
+
+            {#{{ form_widget(contentForm.files.vars.prototype.file)|e }}#}
+            {% if content is defined %}
+            <form action="{{ path('save_edit_profile_content', {'contentAlias': content.alias}) }}" method="POST" enctype="multipart/form-data">
+            {% else %}
+            <form action="{{ path('save_profile_content') }}" method="POST" enctype="multipart/form-data">
+            {% endif %}
+            <div id="file-proto" data-prototype="{{ form_widget(contentForm.files.vars.prototype.file)|e }}"></div>
+            {#<div id="file-proto" data-prototype="&lt;div class=&quot;row margin-bottom-5&quot; id=&quot;cms_backendbundle_content_files___name__&quot;&gt;&lt;div class=&quot;col-xs-12 col-sm-10&quot;&gt;&lt;input type=&quot;file&quot; class=&quot;form-control&quot; id=&quot;cms_backendbundle_content_files___name___file&quot; name=&quot;cms_backendbundle_content[files][_name_][file]&quot; required=&quot;required&quot; maxlength=&quot;255&quot; /&gt;&lt;/div&gt;&lt;div class=&quot;col-xs-12 col-sm-2 text-right strong padding-top-8&quot;&gt;&lt;a onclick=&quot;fileFieldRemove(this)&quot; href=&quot;#&quot;&gt;X&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;"></div>#}
+            <div class="row">
+                <div class="col-xs-12 col-sm-2 padding-top-8">
+                    {{ form_label(contentForm.title) }}:
+                </div>
+                <div class="col-xs-12 col-sm-10">
+                    {{ form_widget(contentForm.title) }}
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-xs-12 col-sm-2 padding-top-8">
+                    {{ form_label(contentForm.category) }}:
+                </div>
+                <div class="col-xs-12 col-sm-10">
+                    {{ form_widget(contentForm.category) }}
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 padding-top-8">
+                    {{ form_label(contentForm.text) }}:
+                </div>
+                <div class="col-xs-12 col-sm-12 padding-top-8">
+                    {{ form_widget(contentForm.text) }}
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-xs-12 col-sm-2 padding-top-8">
+                    {{ form_label(contentForm.files) }}:
+                </div>
+                <div class="col-xs-12 col-sm-10 padding-top-8">
+                    {% if content is defined and content.files|length >0 %}
+                    <ul class="list-unstyled">
+                        {% for file in content.files %}
+                        <li class="margin-bottom-10"><a href="{{ asset(file.filePath) ~ '/' ~ file.fileName }}">{{ file.fileName }}</a> <a href="#" onclick="removeFile(this, {{ file.id }})" class="pull-right">X</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <div id="file-place"></div>
+                    <a href="#" id="add-file" class="pull-left">Прикрепить файл</a>
+                    <a href="#" id="remove-file" class="pull-right">Убрать файл</a>
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-xs-12 col-sm-2 padding-top-8">
+                    {{ form_label(contentForm.tags) }}:
+                </div>
+                <div class="col-xs-12 col-sm-10">
+                    {% if content is defined and content.tags|length > 0 %}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <ul class="nav nav-pills">
+                                    {% for tag in content.tags %}
+                                        <li><a href="#">{{ tag.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {{ form_widget(contentForm.tags) }}
+                    <input type="hidden" name="contentTags" id="contentTags" style="width:100%" />
+                </div>
+            </div><br/>
+            <div class="row text-center">
+                {{ form_widget(contentForm._token) }}
+                <input name="save" id="form-send" type="submit" class="btn btn-primary" value="Добавить"/>
+            </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-sm-2"></div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('cms/js/select2.js') }}"></script>
+<script src="{{ asset('cms/js/elrte.min.js') }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ asset('cms/js/i18n/elrte.ru.js') }}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    function removeFile(item, fileID) {
+        var li = $(item).parent();
+        $.ajax({
+            type: "POST",
+            url: '{{ path('profile_content_remove_file_ajax') }}',
+            data: {fileID: fileID},
+            success: function(data) {
+                console.log(data);
+                li.hide('slow', function() {
+                    this.remove();
+                });
+            },
+            dataType: 'json'
+        });
+        return false;
+    }
+    function fileFieldRemove(file) {
+        var fileField = $(file).parent().parent();
+        $(fileField).hide('slow', function() {
+            $(this).remove();
+        })
+    }
+    var indexField = 0;
+    $(document).ready(function() {
+        $('#add-file').click(function() {
+            var fileField = $($('#file-proto').attr('data-prototype').replace(new RegExp('__name__', 'g'), indexField));
+            $(fileField).hide();
+            $('#file-place').append(fileField);
+            $(fileField).show('slow');
+            indexField++;
+            return false;
+        });
+        $('#remove-file').click(function() {
+            var fileFields = $('#file-place').children();
+            $(fileFields[fileFields.length-1]).hide('slow', function() {
+                $(this).remove();
+            });
+            return false;
+        });
+        var tagsList = (function() {
+            var tags = [];
+            $("#cms_backendbundle_content_tags option").each(function() {
+                tags.push({id: $(this).val(), text: $(this).text()});
+            })
+            return tags;
+        })();
+        $('#cms_backendbundle_content_tags').hide();
+        $("#contentTags").select2({
+            createSearchChoice:function(term, data) {
+                if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length===0) {
+                    return {id:term, text:term};
+                }
+            },
+            data: tagsList,
+            multiple: true
+        });
+        var opts = {
+            lang         : 'ru',
+            styleWithCSS : false,
+            height       : 400,
+            toolbar      : 'complete'
+        };
+        $('#cms_backendbundle_content_text').elrte(opts);
+//        $('#form-send').click(function() {
+//            var form = $(this).closest('form');
+//            console.log(form.children('input'));
+//        });
+    })
+</script>
+{% endblock %}

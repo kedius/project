@@ -1,0 +1,71 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container">
+        {% include "CMSBackendBundle::navigate.html.twig" %}
+        <div class="row">
+            <div class="col-xs-12 col-sm-2"></div>
+            <div class="col-xs-12 col-sm-8">
+                <div class="pull-left padding-top-8 padding-left-12">
+                    <a href="{{ path('_admin_categories_add') }}" class="btn btn-primary">Добавить категорию</a>
+                </div>
+                <div class="pull-right">
+                    <form class="navbar-form navbar-left" action="{{ path('_admin_search_categories') }}" method="POST" role="search">
+                        <div class="form-group">
+                            <input type="text" name="category" class="form-control" {% if searchString is defined and searchString != null %}value="{{ searchString }}" {% endif %}required="required" placeholder="Название категории">
+                        </div>
+                        <button type="submit" class="btn btn-default">Поиск</button>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="well">
+                    <table class="table table-hover margin-bottom-0">
+                        <thead>
+                            <th>ID</th>
+                            <th>Название категории</th>
+                            <th>Родительская категория</th>
+                            <th>ROOT ID</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                                {% if searchString is defined and category.parent %}
+                                    {{ _self.display_tree(category, category.parent.title) }}
+                                {% else %}
+                                    {{ _self.display_tree(category) }}
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <div class="alert alert-warning">
+                                            Нет элементов для отображения.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% macro display_tree(category, parent = null) %}
+                                <tr>
+                                    <td class="vertical-middle">{{ category.id }}</td>
+                                    <td class="vertical-middle">
+                                        {{ '--'|str_repeat(category.level) }} {{ category.title }}
+                                    </td>
+                                    <td class="vertical-middle">{% if parent %}{{ parent }}{% endif %}</td>
+                                    <td class="vertical-middle">{% if category.id == category.root %}ROOT{% else %}{{ category.root }}{% endif %}</td>
+                                    <td class="small">
+                                        <a href="{{ path('_admin_categories_edit', {'categoryID': category.id}) }}">Редактировать</a><br/>
+                                        <a href="{{ path('_admin_categories_delete', {'categoryID': category.id}) }}">Удалить</a>
+                                    </td>
+                                </tr>
+                                {% if category.__children|default() %}
+                                    {% for children in category.__children %}
+                                        {{ _self.display_tree(children, category.title) }}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endmacro %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-2"></div>
+        </div>
+    </div>
+{% endblock %}

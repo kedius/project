@@ -1,0 +1,138 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ asset('cms/css/jqcloud.css') }}"/>
+{% endblock %}
+{% block body %}
+<header>
+    <div class="container">
+        <h1>Hello World!</h1>
+        <strong>This is test project. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</strong>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            {% if breadCrumbs is defined and breadCrumbs|length > 0 %}
+            <ol class="breadcrumb">
+                <li><a href="{{ path('index_page') }}">Главная</a></li>
+                {% for category in breadCrumbs %}
+                    {% if loop.index < breadCrumbs|length %}
+                    <li><a href="{{ path('show_content_by_category', {'category': category.alias}) }}">{{ category.title }}</a></li>
+                    {% else %}
+                    <li class="active">{{ category.title }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+            {% endif %}
+            <div class="content-list">
+            {% for article in pagination %}
+                <div class="post container col-xs-12 col-sm-12">
+                    <div class="row">
+                        <div class="rating col-xs-12 col-sm-1 text-center h4">
+                            {% set ratedUp = '' %}
+                            {% set ratedDown = '' %}
+                            {% if app.session.get('rated').content[article.id] is defined  %}
+                                {% if app.session.get('rated').content[article.id].rate == 'up' %}
+                                    {% set ratedUp = 'rated' %}
+                                {% elseif app.session.get('rated').content[article.id].rate == 'down' %}
+                                    {% set ratedDown = 'rated' %}
+                                {% endif %}
+                            {% endif %}
+                            <i id="up"{% if ratedUp != 'rated' and is_granted('ROLE_USER') %} onclick="rateUp({{ article.id }}, 'content', this)"{% endif %} class="glyphicon glyphicon-chevron-up {{ ratedUp }}"></i><br/>
+                            <span id="rating">{{ article.rating }}</span>
+                            <i id="down"{% if ratedDown != 'rated' and is_granted('ROLE_USER') %} onclick="rateDown({{ article.id }}, 'content', this)"{% endif %} class="glyphicon glyphicon-chevron-down {{ ratedDown }}"></i>
+                        </div>
+                        <div class="post-content col-xs-12 col-sm-11">
+                            <div class="post-title">
+                                <p><a href="{{ path('view_content', {'alias': article.alias}) }}">{{ article.title }}</a></p>
+                                <div class="small post-info">
+                                    Автор: <a href="{{ path('show_content_by_user', {'username': article.author.username}) }}">{{ article.author.username }}</a>;
+                                    Отправлено: {{ article.dateAt | date("d.m.Y H:i") }};
+                                    {% if (article.comments | length % 10 == 1) %}
+                                        <a href="{{ path('view_content', {'alias': article.alias}) }}#comments">{{ article.comments | length }} коментарий</a>;
+                                    {% elseif (article.comments | length % 10 > 1 and  article.comments | length % 10 < 5) %}
+                                        <a href="{{ path('view_content', {'alias': article.alias}) }}#comments">{{ article.comments | length }} коментария</a>;
+                                    {% else %}
+                                        <a href="{{ path('view_content', {'alias': article.alias}) }}#comments">{{ article.comments | length }} коментариев</a>;
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="post-text well">
+                                {{ article.text | raw }}
+                                {% if article.files|length > 0 %}
+                                    <div class="padding-top-8">
+                                        <strong>Вложения:</strong>
+                                    </div>
+                                    <div class="panel panel-default margin-bottom-0">
+                                        <div class="panel-body">
+                                            <ul class="margin-bottom-0">
+                                                {% for file in article.files %}
+                                                    <li><a href="{{ asset(file.filePath) ~ '/' ~ file.fileName }}">{{ file.fileName }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="panel panel-default post-options">
+                                <div class="panel-body">
+                                    Категория: <a href="{{ path('show_content_by_category', {'category': article.category.alias}) }}">{{ article.category.title }}</a>;
+                                    {% if article.tags %}
+                                    Тэги:
+                                        {% for tag in article.tags %}
+                                            {% if loop.index < article.tags | length %}
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.name}) }}">{{ tag.name }}</a>,
+                                            {% else %}
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.name}) }}">{{ tag.name }}</a>;
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">Нет элементов для отображения.</div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 sidebar-offcanvas">
+            <div class="container col-xs-12 col-sm-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% if app.user %}
+                            {% render controller("CMSFrontendBundle:Main:logged") %}
+                        {% else %}
+                            {% render controller("CMSFrontendBundle:Auth:login", {'render': true}) %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% render controller("CMSFrontendBundle:Main:categories", {'path': 'show_content_by_category'}) %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% render controller("CMSFrontendBundle:Main:tags") %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('cms/js/jqcloud-1.0.4.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#tagsCloud").jQCloud(tags_list);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,6 @@
+<form action="{{  path('add_comment', {'alias': contentAlias}) }}" method="POST">
+    {{ form_label(commentsForm.message) }}:
+    {{ form_widget(commentsForm.message) }}<br/>
+    {{ form_rest(commentsForm) }}
+    <input type="submit" value="Оставить комментарий" class="btn btn-primary btn-sm"/>
+</form>

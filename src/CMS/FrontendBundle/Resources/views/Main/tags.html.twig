@@ -1,0 +1,14 @@
+<script type="text/javascript">
+    var tags_list = [
+    {% for tag in tags %}
+        {text:"{{ tag.name }}", weight:{{ tag.contents | length }}, link:"{{ path('show_content_by_tag', {'tag': tag.id}) }}"}{% if loop.index < tags | length %},{% endif %}
+    {% endfor %}
+    ];
+</script>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Облако тегов</h3>
+    </div>
+    <div class="panel-body"  id="tagsCloud">
+    </div>
+</div>

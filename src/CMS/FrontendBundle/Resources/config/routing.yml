@@ -1,0 +1,67 @@
+_security_login:
+    pattern:  /login
+    defaults: { _controller: CMSFrontendBundle:Auth:login, render: false }
+
+_security_check:
+    pattern:  /login_check
+
+_security_logout:
+    pattern:  /logout
+
+_register:
+    pattern:  /signup
+    defaults: { _controller: CMSFrontendBundle:Auth:register }
+    requirements:
+        _method:  GET
+
+_add_user:
+    pattern:  /signin
+    defaults: { _controller: CMSFrontendBundle:Auth:addUser }
+    requirements:
+        _method:  POST
+
+index_page:
+    pattern: /
+    defaults: { _controller: CMSFrontendBundle:Main:index }
+    requirements:
+        _method:  GET
+
+view_content:
+    pattern: /{alias}
+    defaults: { _controller: CMSFrontendBundle:Main:viewContent }
+    requirements:
+        _method:  GET
+
+show_content_by_category:
+    pattern: /category/{category}
+    defaults: { _controller: CMSFrontendBundle:Main:contentByCategory }
+    requirements:
+        _method:  GET
+
+show_content_by_user:
+    pattern: /user/{username}
+    defaults: { _controller: CMSFrontendBundle:Main:contentByUser }
+    requirements:
+        _method:  GET
+
+show_content_by_tag:
+    pattern: /tag/{tag}
+    defaults: { _controller: CMSFrontendBundle:Main:contentByTag }
+    requirements:
+        _method:  GET
+
+add_comment:
+    pattern: /{alias}/add/comment
+    defaults: { _controller: CMSFrontendBundle:Main:addComment }
+    requirements:
+        _method:  POST
+
+
+ajax_rate:
+    pattern: /ajax/rate
+    defaults: { _controller: CMSFrontendBundle:Main:ajaxRate }
+    requirements:
+        _method:  POST
+#cms_core_homepage:
+#    pattern:  /hello/{name}
+#    defaults: { _controller: CMSCoreBundle:Default:index }

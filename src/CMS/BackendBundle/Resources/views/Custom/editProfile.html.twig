@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <form action="{{ path('save_profile', {'username': username}) }}" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8 well">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 text-right">
+                    {{ form_label(userForm.username) }}:
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    {{ form_widget(userForm.username) }}
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 text-right">
+                    {{ form_label(userForm.image) }}:
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <input type="file" name="cms_backendbundle_user[image]" id="cms_backendbundle_user_image" class="form-control"/>
+                </div>
+            </div><br/>
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 text-right">
+                    {{ form_label(userForm.roles) }}:
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    {{ form_widget(userForm.roles) }}
+                </div>
+            </div><br/>
+            {% endif %}
+            <div class="row text-center">
+                {{ form_widget(userForm._token) }}
+                <input type="submit" value="Сохранить" class="btn btn-primary"/>
+                {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('_admin_users') }}" class="btn btn-danger">Назад</a>
+                {% else %}
+                    <a href="{{ path('index_page') }}" class="btn btn-danger">Назад</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-2"></div>
+    </div>
+    </form>
+</div>
+{% endblock %}

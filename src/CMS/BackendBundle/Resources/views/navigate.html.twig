@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('profile') }}">Панель управления</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {% if is_granted('ROLE_PUBLISHER') %}
+                    <li><a href="{{ path('profile_content') }}">Публикации</a></li>
+                    {% endif %}
+                    {% if is_granted('ROLE_AUTHOR') %}
+                    <li><a href="{{ path('profile_my_content') }}">Мои публикации</a></li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('_admin_users') }}">Пользователи</a></li>
+                    <li><a href="{{ path('_admin_categories') }}">Категории</a></li>
+                    {% else %}
+                    <li><a href="{{ path('edit_profile') }}">Редактирование профиля</a></li>
+                    {% endif %}
+                </ul>
+                <div class="navbar-form pull-right">
+                    {% if is_granted('ROLE_AUTHOR') %}
+                    <a href="{{ path('add_profile_content') }}" class="btn btn-success">Добавить публикацию</a>
+                    {% endif %}
+                    <a href="{{ path('_security_logout') }}" class="btn btn-danger">Выйти</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

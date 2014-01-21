@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8 well">
+            {% if is_granted('ROLE_USER') %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <strong>Пользователь</strong> – имеет право на просмотр публичной части, никаких возможностей изменить содержание + может оставлять комментарии на страницах, созданных в системе (не загружаемых извне).
+                </div>
+            </div>
+            {% endif %}
+            {% if is_granted('ROLE_AUTHOR') %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <strong>Автор</strong> – Имеет право на ограниченный доступ в раздел администрирования, позволяющий ему создавать и править статьи, загружать иные ресурсы в дерево.
+                    </div>
+                </div>
+            {% endif %}
+            {% if is_granted('ROLE_PUBLISHER') %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <strong>Издатель</strong> – Так же ограниченный доступ в раздел администрирования. Производит обзор материалов авторов и принимает решения о публикации материала. При этом не имеет право его менять. Может только оставлять комментарии, доступные только авторам (например, причина отказа в публикации). Авторы и издатели имеют возможность назначать тэги каждому ресурсу (включая загружаемые документы).
+                    </div>
+                </div>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <strong>Администратор</strong> – Имеет доступ к управлению сайтом, но не может редактировать материал авторов и принимать решение о публикации, т.е. его задача – управление аккаунтами пользователей.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-sm-2"></div>
+    </div>
+</div>
+{% endblock %}

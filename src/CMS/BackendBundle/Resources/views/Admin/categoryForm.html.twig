@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container">
+        {% include "CMSBackendBundle::navigate.html.twig" %}
+        <div class="row">
+            <div class="col-xs-12 col-sm-2"></div>
+            <div class="col-xs-12 col-sm-8 well">
+                <form action="{{ path('_admin_categories_save', {'categoryID': categoryID}) }}" method="POST">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3 text-right">
+                        {{ form_label(categoryForm.parent) }}:
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        {{ form_widget(categoryForm.parent) }}
+                    </div>
+                </div><br/>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3 text-right">
+                        {{ form_label(categoryForm.title) }}:
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        {{ form_widget(categoryForm.title) }}
+                    </div>
+                </div><br/>
+                <div class="row text-center">
+                    {{ form_widget(categoryForm._token) }}
+                    <input type="submit" value="Сохранить" class="btn btn-primary"/>
+                    <a href="{{ path('_admin_categories') }}" class="btn btn-danger">Назад</a>
+                </div>
+                </form>
+            </div>
+            <div class="col-xs-12 col-sm-2"></div>
+        </div>
+    </div>
+{% endblock %}

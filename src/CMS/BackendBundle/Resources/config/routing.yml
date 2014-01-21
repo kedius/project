@@ -1,0 +1,137 @@
+profile:
+    pattern: /profile
+    defaults: { _controller: CMSBackendBundle:Custom:profile, status: null }
+    requirements:
+        _method:  GET
+
+edit_profile:
+    pattern:  /profile/edit/{username}
+    defaults: { _controller: CMSBackendBundle:Custom:editProfile, username: null }
+    requirements:
+        _method:  GET
+
+save_profile:
+    pattern: /profile/save/{username}
+    defaults: { _controller: CMSBackendBundle:Custom:saveProfile, username: null }
+    requirements:
+        _method:  POST
+
+profile_content:
+    pattern: /profile/content
+    defaults: { _controller: CMSBackendBundle:Custom:contentNotPublishedList }
+    requirements:
+        _method:  GET
+
+add_profile_content:
+    pattern: /profile/content/add
+    defaults: { _controller: CMSBackendBundle:Custom:addContent, contentAlias: null }
+    requirements:
+        _method:  GET
+
+edit_profile_content:
+    pattern: /profile/content/edit/{contentAlias}
+    defaults: { _controller: CMSBackendBundle:Custom:addContent }
+    requirements:
+        _method:  GET
+
+save_edit_profile_content:
+    pattern: /profile/content/edit/{contentAlias}/save
+    defaults: { _controller: CMSBackendBundle:Custom:editSaveContent }
+    requirements:
+        _method:  POST
+
+view_profile_content:
+    pattern: /profile/content/{contentAlias}
+    defaults: { _controller: CMSBackendBundle:Custom:viewAnyContents }
+    requirements:
+        _method:  GET
+
+save_profile_content:
+    pattern: /profile/content/save/{contentAlias}
+    defaults: { _controller: CMSBackendBundle:Custom:saveContent, contentAlias: null }
+    requirements:
+        _method:  POST
+
+profile_content_remove_file_ajax:
+    pattern: /profile/content/edit/remove-file
+    defaults: { _controller: CMSBackendBundle:Custom:removeFileAjax }
+    requirements:
+        _method:  POST
+
+profile_my_content:
+    pattern: /profile/my/content/{status}
+    defaults: { _controller: CMSBackendBundle:Custom:myContent, status: null }
+    requirements:
+        _method:  GET
+
+profile_content_review:
+    pattern: /profile/review/content/my
+    defaults: { _controller: CMSBackendBundle:Custom:contentMyReviewList }
+    requirements:
+        _method:  GET
+
+profile_content_reviewed:
+    pattern: /profile/review/content/{contentAlias}
+    defaults: { _controller: CMSBackendBundle:Custom:reviewedContent }
+    requirements:
+        _method:  GET
+
+profile_content_reviewed_save:
+    pattern: /profile/review/content/{contentAlias}/save
+    defaults: { _controller: CMSBackendBundle:Custom:saveReviewContent }
+    requirements:
+        _method:  POST
+
+profile_content_reviewed_by_category:
+    pattern: /profile/content/category/{category}
+    defaults: { _controller: CMSBackendBundle:Custom:contentNotPublishedByCategory }
+    requirements:
+        _method:  GET
+
+_admin_users:
+    pattern: /admin/users
+    defaults: { _controller: CMSBackendBundle:Admin:userList }
+    requirements:
+        _method:  GET
+
+_admin_search_users:
+    pattern: /admin/search/users
+    defaults: { _controller: CMSBackendBundle:Admin:userSearch }
+    requirements:
+        _method:  POST
+
+_admin_search_categories:
+    pattern: /admin/search/categories
+    defaults: { _controller: CMSBackendBundle:Admin:categorySearch }
+    requirements:
+        _method:  POST
+
+_admin_categories:
+    pattern: /admin/categories
+    defaults: { _controller: CMSBackendBundle:Admin:categoryList }
+    requirements:
+        _method:  GET
+
+_admin_categories_add:
+    pattern: /admin/categories/add
+    defaults: { _controller: CMSBackendBundle:Admin:categoryForm, categoryID: null }
+    requirements:
+        _method:  GET
+
+_admin_categories_edit:
+    pattern: /admin/categories/edit/{categoryID}
+    defaults: { _controller: CMSBackendBundle:Admin:categoryForm }
+    requirements:
+        _method:  GET
+
+_admin_categories_delete:
+    pattern: /admin/categories/delete/{categoryID}
+    defaults: { _controller: CMSBackendBundle:Admin:categoryDelete }
+    requirements:
+        _method:  GET
+
+_admin_categories_save:
+    pattern: /admin/categories/save/{categoryID}
+    defaults: { _controller: CMSBackendBundle:Admin:categorySave, categoryID: null }
+    requirements:
+        _method:  POST

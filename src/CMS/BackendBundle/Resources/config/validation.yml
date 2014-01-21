@@ -1,0 +1,35 @@
+CMS\BackendBundle\Entity\Content:
+  properties:
+      title:
+          - NotBlank:
+              message: "Заголовок не может быть пустым"
+          - Length:
+              min: 8
+              minMessage: "Заголовок не может быть короче 8 символов"
+      category:
+          - NotBlank:
+              message: "Категория не может быть пустой"
+      text:
+          - NotBlank:
+              message: "Текст не может быть пустым"
+          - Length:
+              min: 140
+              minMessage: "Текст не может быть короче 140 символов"
+
+CMS\BackendBundle\Entity\User:
+  properties:
+      username:
+          - NotBlank:
+              message: "Логин не может быть пустым"
+      password:
+          - NotBlank:
+              message: "Пароль не может быть пустой"
+
+
+CMS\BackendBundle\Entity\Files:
+    properties:
+        file:
+            - File:
+              maxSize: 1024k
+              mimeTypes: [application/pdf, application/x-pdf]
+              mimeTypesMessage: Please upload a valid PDF

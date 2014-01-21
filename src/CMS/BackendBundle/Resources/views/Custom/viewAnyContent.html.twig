@@ -1,0 +1,81 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('cms/css/select2.css') }}"/>
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-2">Статус:</div>
+                        {% if content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED') %}
+                        <div class="col-xs-12 col-sm-8"><span class="label label-success">{{ content.status.status }}</span></div>
+                        {% elseif content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                        <div class="col-xs-12 col-sm-8"><span class="label label-warning">{{ content.status.status }}</span></div>
+                        {% elseif content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED') %}
+                        <div class="col-xs-12 col-sm-8"><span class="label label-danger">{{ content.status.status }}</span></div>
+                        {% endif %}
+                    </div>
+                    {% if content.status.id != constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                    <div class="row padding-top-8">
+                        <div class="col-xs-12 col-sm-2">Обработана:</div>
+                        <div class="col-xs-12 col-sm-8"><small>{{ content.publicDate | date("d.m.Y H:i") }}</small></div>
+                    </div>
+                    <div class="row padding-top-8">
+                        <div class="col-xs-12 col-sm-2">Издатель:</div>
+                        <div class="col-xs-12 col-sm-8"><strong>{{ content.publisher.username }}</strong></div>
+                    </div>
+                        {% if content.author.id == app.user.id or content.publisher.id == app.user.id %}
+                        <div class="bs-callout bs-callout-success">
+                            <h4>Рецензия</h4>
+                            <p>{{ content.review.comment }}</p>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <h4 class="margin-bottom-5">{{ content.title }}</h4>
+            <div class="small margin-bottom-5">
+                Автор: {{ content.author.username }};
+                Отправлена: {{ content.dateAt | date("d.m.Y H:i") }};
+            </div>
+            <div class="well margin-bottom-5">
+                <div>
+                    {{ content.text|raw }}
+                </div>
+                {% if content.files|length > 0 %}
+                <div class="padding-top-8">
+                    <strong>Вложения:</strong>
+                    <div class="panel panel-default margin-bottom-0">
+                        <div class="panel-body">
+                            <ul class="margin-bottom-0">
+                            {% for file in content.files %}
+                                <li><a href="{{ asset(file.filePath) ~ '/' ~ file.fileName }}">{{ file.fileName }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="panel panel-default post-options margin-bottom-0">
+                <div class="panel-body">
+                    Категория: {{ content.category.title }};
+                    {% if content.tags|length >0 %}
+                    Тэги:
+                        {% for tag in content.tags %}
+                            {{ tag.name }}{% if loop.index < content.tags|length %},{% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-2"></div>
+    </div>
+</div>
+{% endblock %}

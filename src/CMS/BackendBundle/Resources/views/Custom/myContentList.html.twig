@@ -1,0 +1,97 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<div class="container">
+    {% include "CMSBackendBundle::navigate.html.twig" %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="nav nav-pills">
+                        {% if status is defined and status is null %}
+                            <li class="active"><a href="#">Все публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED')}) }}">Опубликовали</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED')}) }}">Отказали в публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED')}) }}">Не обработанные</a></li>
+                        {% elseif status == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED') %}
+                            <li><a href="{{ path('profile_my_content') }}">Все публикации</a></li>
+                            <li class="active"><a href="#">Опубликовали</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED')}) }}">Отказали в публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED')}) }}">Не обработанные</a></li>
+                        {% elseif status == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED') %}
+                            <li><a href="{{ path('profile_my_content') }}">Все публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED')}) }}">Опубликовали</a></li>
+                            <li class="active"><a href="#">Отказали в публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED')}) }}">Не обработанные</a></li>
+                        {% elseif status == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                            <li><a href="{{ path('profile_my_content') }}">Все публикации</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED')}) }}">Опубликовали</a></li>
+                            <li><a href="{{ path('profile_my_content', {'status': constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED')}) }}">Отказали в публикации</a></li>
+                            <li class="active"><a href="#">Не обработанные</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="well">
+                <table class="table">
+                    <thead>
+                        <th>ID</th>
+                        <th></th>
+                        <th>Заголовок</th>
+                        <th>Категория</th>
+                        <th>Тэги</th>
+                        <th class="text-center">Статус</th>
+                        <th class="text-center">Издатель</th>
+                        <th>Рецензия</th>
+                    </thead>
+                    <tbody>
+                    {% for content in myContents %}
+                        {% if content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                        <tr class="warning">
+                        {% elseif content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED') %}
+                        <tr class="success">
+                        {% elseif content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED') %}
+                        <tr class="danger">
+                        {% endif %}
+                            <td class="small">{{ content.id }}</td>
+                            <td>{% if content.files|length > 0 %}<i class="glyphicon glyphicon-paperclip"></i>{% endif %}</td>
+                            <td>
+                                <a href="{{ path('view_profile_content', {'contentAlias': content.alias}) }}">{{ content.title }}</a>
+                                {% if content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                                    <div class="small"><a href="{{ path('edit_profile_content', {'contentAlias': content.alias}) }}">редактировать</a></div>
+                                {% endif %}
+                            </td>
+                            <td class="small">{{ content.category.title }}</td>
+                            <td class="small">
+                                {% for tag in content.tags %}
+                                    {{ tag.name }}{% if loop.index < content.tags|length %},{% endif %}
+                                {% else %}
+                                    -----
+                                {% endfor %}
+                            </td>
+                            {% if content.status.id != constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_NOT_PUBLISHED') %}
+                            <td class="text-center small">{{ content.status.status }}</td>
+                            <td class="text-center small">{{ content.publisher.username }}</td>
+                            <td class="small">{{ content.review.comment }}</td>
+                            {% else %}
+                            <td class="text-center small">{{ content.status.status }}</td>
+                            <td class="text-center">-----</td>
+                            <td>-----</td>
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">
+                                <div class="alert alert-warning">Нет необработаных материалов.</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="navigation">
+                {{ knp_pagination_render(myContents) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

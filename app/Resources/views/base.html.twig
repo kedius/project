@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('cms/css/bootstrap.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('cms/css/smoothness/jquery-ui-1.8.13.custom.css') }}" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="{{ asset('cms/css/project.css') }}"/>
+        {% block stylesheets %}{% endblock %}
+        <script type="text/javascript">
+            {% if app.environment == 'dev' %}
+            var asset = '{{ asset('app_dev.php') }}';
+            {% elseif app.environment == 'prod' %}
+            var asset = '{{ asset('app.php') }}';
+            {% endif %}
+        </script>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% if not is_granted('ROLE_USER') %}
+            {% render controller("CMSFrontendBundle:Auth:register") %}
+        {% endif %}
+        <div id="modal-place"></div>
+        <script type="text/javascript" src="{{ asset('cms/js/jquery-1.9.1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('cms/js/jquery-migrate-1.2.1.js') }}"></script>
+        <script src="{{ asset('cms/js/jquery-ui-1.8.13.custom.min.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="{{ asset('cms/js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('cms/js/project.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+            {%  if app.session.flashbag.has('error') %}
+                {% set flashbag = app.session.flashbag.get('error') %}
+                flashbag('error', [{% for message in flashbag %}'{{ message }}'{% if loop.index < flashbag|length %},{% endif %}{% endfor %}]);
+            {% elseif app.session.flashbag.has('notice') %}
+                {% set flashbag = app.session.flashbag.get('notice') %}
+                flashbag('notice', [{% for message in flashbag %}'{{ message }}'{% if loop.index < flashbag|length %},{% endif %}{% endfor %}]);
+            {% elseif app.session.flashbag.has('success') %}
+                {% set flashbag = app.session.flashbag.get('success') %}
+                flashbag('success', [{% for message in flashbag %}'{{ message }}'{% if loop.index < flashbag|length %},{% endif %}{% endfor %}]);
+            {% endif %}
+            {% if not is_granted('ROLE_USER') %}
+                $('#open-modal-signup').click(function () {
+                    $('#modal-sugnup-place').css('height', window.innerHeight+'px');
+                    $('#modal-sugnup-place').show();
+                    $('#modal-signup').show();
+                });
+                $('#close-modal-signup').click(function () {
+                    $('#modal-sugnup-place').hide();
+                    $('#modal-signup').hide();
+                });
+            {% endif %}
+            });
+        </script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

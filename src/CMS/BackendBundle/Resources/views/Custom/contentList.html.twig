@@ -1,0 +1,99 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container">
+        {% include "CMSBackendBundle::navigate.html.twig" %}
+        <div class="row">
+            <div class="content-place">
+                <div class="col-xs-12 col-sm-3">
+                    {% render controller("CMSFrontendBundle:Main:categories", {'path': 'profile_content_reviewed_by_category'}) %}
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills">
+                                {% if myreview is defined %}
+                                    <li><a href="{{ path('profile_content') }}">Необработанные</a></li>
+                                    <li class="active"><a href="#">Обработанные мной</a></li>
+                                {% else %}
+                                    <li class="active"><a href="#">Необработанные</a></li>
+                                    <li><a href="{{ path('profile_content_review') }}">Обработанные мной</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% if breadCrumbs is defined and breadCrumbs|length > 0 %}
+                        <ol class="breadcrumb">
+                            <li><a href="{{ path('profile') }}">Панель управления</a></li>
+                            <li><a href="{{ path('profile_content') }}">Публикации</a></li>
+                            {% for category in breadCrumbs %}
+                                {% if loop.index < breadCrumbs|length %}
+                                    <li><a href="{{ path('profile_content_reviewed_by_category', {'category': category.alias}) }}">{{ category.title }}</a></li>
+                                {% else %}
+                                    <li class="active">{{ category.title }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    <div class="well">
+                    <table class="table">
+                        <thead>
+                            <th>ID</th>
+                            <th>Заголовок</th>
+                            <th>Автор</th>
+                            <th>Категория</th>
+                            <th></th>
+                            {% if myreview is defined %}
+                            <th>Статус</th>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                        {% for content in contents %}
+                            {% if myreview is defined %}
+                                {% if content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED') %}
+                            <tr class="success">
+                                {% elseif content.status.id == constant('CMS\\BackendBundle\\Helper\\KeeperDataTable::STATUS_PUBLISHED_DENIED') %}
+                            <tr class="danger">
+                                {% endif %}
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                                <td>{{ content.id }}</td>
+                                <td>
+                                {% if myreview is defined %}
+                                    <a href="{{ path('view_profile_content', {'contentAlias': content.alias}) }}">{{ content.title }}</a>
+                                {% else %}
+                                    <a href="{{ path('profile_content_reviewed', {'contentAlias': content.alias}) }}">{{ content.title }}</a>
+                                {% endif %}
+                                </td>
+                                <td>{{ content.author.username }}</td>
+                                <td><a href="{{ path('profile_content_reviewed_by_category', {'category': content.category.alias}) }}">{{ content.category.title }}</a></small></td>
+                                <td>{% if content.contentType.id == 2 %}<i title="Содержит вложения" class="glyphicon glyphicon-paperclip"></i>{% endif %}</td>
+                                {% if myreview is defined %}
+                                <td class="tooltip-place">
+                                    <span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{ content.review.comment }}">{{ content.status.status }}</span>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    <div class="alert alert-warning">Нет необработаных материалов.</div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+    $('.tooltip-place').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+</script>
+{% endblock %}

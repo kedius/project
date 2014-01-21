@@ -1,0 +1,40 @@
+<div id="modal-sugnup-place"></div>
+<div id="modal-signup" class="text-center">
+    <form action="{{ path('_add_user') }}" method="POST">
+        <table class="table table-no-border">
+            <thead>
+                <th colspan="2" class="text-center"><h4>Регистрация нового пользователя</h4></th>
+            </thead>
+            <tbody>
+                <tr class="margin-bottom-10"><td colspan="2"></td></tr>
+                <tr>
+                    <td class="text-right vertical-middle">
+                        {{ form_label(signup.username) }}
+                    </td>
+                    <td>
+                        {{ form_widget(signup.username) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right vertical-middle">
+                        {{ form_label(signup.password.first) }}
+                    </td>
+                    <td>
+                        {{ form_widget(signup.password.first) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right vertical-middle">
+                        {{ form_label(signup.password.second) }}
+                    </td>
+                    <td>
+                        {{ form_widget(signup.password.second) }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {{ form_rest(signup) }}
+        <input class="btn btn-success" type="submit" value="Зарегистрироваться" />
+        <a href="#" id="close-modal-signup" class="btn btn-danger">Отмена</a>
+    </form>
+</div>

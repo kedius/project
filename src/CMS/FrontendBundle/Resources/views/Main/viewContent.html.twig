@@ -1,0 +1,175 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ asset('cms/css/jqcloud.css') }}"/>
+{% endblock %}
+{% block body %}
+<header>
+    <div class="container">
+        <h1>Hello World!</h1>
+        <strong>This is test project. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</strong>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            {% if breadCrumbs is defined and breadCrumbs|length > 0 %}
+                <ol class="breadcrumb">
+                    <li><a href="{{ path('index_page') }}">Главная</a></li>
+                    {% for category in breadCrumbs %}
+                    <li><a href="{{ path('show_content_by_category', {'category': category.alias}) }}">{{ category.title }}</a></li>
+                    {% endfor %}
+                    <li class="active">{{ content.title }}</li>
+                </ol>
+            {% endif %}
+            <div class="content-list">
+                <div class="post container col-xs-12 col-sm-12">
+                    <div class="row">
+                        <div class="rating col-xs-12 col-sm-1 text-center h4">
+                            {% set contentRatedUp = '' %}
+                            {% set contentRatedDown = '' %}
+                            {% if app.session.get('rated').content[content.id] is defined %}
+                                {% if app.session.get('rated').content[content.id] is defined and app.session.get('rated').content[content.id].rate == 'up' %}
+                                    {% set contentRatedUp = 'rated' %}
+                                {% elseif app.session.get('rated').content[content.id] is defined and app.session.get('rated').content[content.id].rate == 'down' %}
+                                    {% set contentRatedDown = 'rated' %}
+                                {% endif %}
+                            {% endif %}
+                            <i id="up"{% if contentRatedUp != 'rated' and is_granted('ROLE_USER') %} onclick="rateUp({{ content.id }}, 'content', this)"{% endif %} class="glyphicon glyphicon-chevron-up {{ contentRatedUp }}"></i><br/>
+                            <span id="rating">{{ content.rating }}</span>
+                            <i id="down"{% if contentRatedDown != 'rated' and is_granted('ROLE_USER') %} onclick="rateDown({{ content.id }}, 'content', this)"{% endif %} class="glyphicon glyphicon-chevron-down {{ contentRatedDown }}"></i>
+                        </div>
+                        <div class="post-content col-xs-12 col-sm-11">
+                            <div class="post-title">
+                                <p>{{ content.title }}</p>
+                                <div class="small post-info">
+                                    Автор: <a href="{{ path('show_content_by_user', {'username': content.author.username}) }}">{{ content.author.username }}</a>;
+                                    Отправлено: {{ content.dateAt | date("d.m.Y H:i") }};
+                                    {% if (content.comments | length % 10 == 1) %}
+                                        <a href="#comments">{{ content.comments | length }} коментарий</a>;
+                                    {% elseif (content.comments | length % 10 > 1 and  content.comments | length % 10 < 5) %}
+                                        <a href="#comments">{{ content.comments | length }} коментария</a>;
+                                    {% else %}
+                                        <a href="#comments">{{ content.comments | length }} коментариев</a>;
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="post-text well">
+                                {{ content.text|raw }}
+                                {% if content.files|length > 0 %}
+                                    <div class="padding-top-8">
+                                        <strong>Вложения:</strong>
+                                    </div>
+                                    <div class="panel panel-default margin-bottom-0">
+                                        <div class="panel-body">
+                                            <ul class="margin-bottom-0">
+                                                {% for file in content.files %}
+                                                    <li><a href="{{ asset(file.filePath) ~ '/' ~ file.fileName }}">{{ file.fileName }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="panel panel-default post-options">
+                                <div class="panel-body">
+                                    Категория: <a href="{{ path('show_content_by_category', {'category': content.category.alias}) }}">{{ content.category.title }}</a>;
+                                    {% if content.tags %}
+                                    Тэги:
+                                        {% for tag in content.tags %}
+                                            {% if loop.index < content.tags | length %}
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.id}) }}">{{ tag.name }}</a>,
+                                            {% else %}
+                                            <a href="{{ path('show_content_by_tag', {'tag': tag.id}) }}">{{ tag.name }}</a>;
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div id="comments">
+                                <a name="comments"></a><br/>
+                                <h4>Комментарии({{  content.comments | length }}):</h4>
+                                <hr/>
+                                {% if content.comments %}
+                                {% for comment in content.comments %}
+                                    <div class="comment">
+                                        <div class="bs-callout bs-callout-info">
+                                            <div class="comment-header h4">
+                                                <div style="display:inline-block">
+                                                    {% set commentRatedUp = '' %}
+                                                    {% set commentRatedDown = '' %}
+                                                    {% if app.session.get('rated').comment[comment.id] is defined %}
+                                                        {% if app.session.get('rated').comment[comment.id].rate == 'up' %}
+                                                            {% set commentRatedUp = 'rated' %}
+                                                        {% elseif app.session.get('rated').comment[comment.id].rate == 'down' %}
+                                                            {% set commentRatedDown = 'rated' %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <i id="up"{% if commentRatedUp != 'rated' and is_granted('ROLE_USER') %} onclick="rateUp({{ comment.id }}, 'comment', this)"{% endif %} class="glyphicon glyphicon-chevron-up small {{ commentRatedUp }}"></i>
+                                                    <span id="rating">{{ comment.rating }}</span>
+                                                    <i id="down"{% if commentRatedDown != 'rated' and is_granted('ROLE_USER') %} onclick="rateDown({{ comment.id }}, 'comment', this)"{% endif %} class="glyphicon glyphicon-chevron-down small {{ commentRatedDown }}"></i>
+
+                                                    <a href="{{ path('show_content_by_user', {'username': comment.user.username}) }}">{{ comment.user.username }}</a>
+                                                </div>
+                                                <div class="pull-right small">Отправлено: {{ comment.createdAt | date("d.m.Y H:i") }}</div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <p>{{ comment.message }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <hr/>
+                                    {% if is_granted('ROLE_USER') %}
+                                        {% render controller("CMSFrontendBundle:Main:comments", {'alias': content.alias}) %}
+                                    {% else %}
+                                        <div class="alert alert-warning">Для того что бы оставить комментарий авторизируйтесь либо зарегистрируйтесь.</div>
+                                    {% endif %}
+                                {% else %}
+                                    {% if is_granted('ROLE_USER') %}
+                                    <div class="alert alert-warning">Ещё никто не оставлял коментариев. Вы можете стать первым.</div>
+                                    {% render controller("CMSFrontendBundle:Main:comments", {'alias': content.alias}) %}
+                                    {% else %}
+                                    <div class="alert alert-warning">Для того, что бы оставить комментарий авторизируйтесь либо зарегистрируйтесь.</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 sidebar-offcanvas">
+            <div class="container col-xs-12 col-sm-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% if app.user %}
+                            {% render controller("CMSFrontendBundle:Main:logged") %}
+                        {% else %}
+                            {% render controller("CMSFrontendBundle:Auth:login", {'render': true}) %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% render controller("CMSFrontendBundle:Main:categories", {'path': 'show_content_by_category'}) %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        {% render controller("CMSFrontendBundle:Main:tags") %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('cms/js/jqcloud-1.0.4.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#tagsCloud").jQCloud(tags_list);
+    });
+</script>
+{% endblock %}
