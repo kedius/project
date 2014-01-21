@@ -11,10 +11,12 @@
 
 Установить composer:
 
-$ curl -sS https://getcomposer.org/installer | php
-$ mv composer.phar /usr/local/bin/composer
+>$ curl -sS https://getcomposer.org/installer | php
+>$ mv composer.phar /usr/local/bin/composer
 
-После установки клонировать проект, затем зайти в папку с проектом и выполнить:
+Дамп базы находится в папке INSTALL. Там же вы найдёте и файл диаграм MySql WorkBench.
+
+После установки composqer клонировать проект, затем зайти в папку с проектом и выполнить:
 
 sudo composer install
 
