@@ -16,17 +16,20 @@ class AdminUserType extends AbstractType
     {
         $builder
             ->add('username', 'text', array(
+                'label' => 'Логин',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('image', 'text', array(
+                'label' => 'Картинка',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('roles', 'entity', array(
+                'label' => 'Роли',
                 'class' => 'CMSBackendBundle:UserRoles',
                 'property'=>'role',
                 'multiple'  => true,

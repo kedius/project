@@ -16,11 +16,13 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', 'text', array(
+                'label' => 'Логин',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('image', 'text', array(
+                'label' => 'Картинка',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

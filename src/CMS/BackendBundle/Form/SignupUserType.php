@@ -16,6 +16,7 @@ class SignupUserType extends AbstractType
     {
         $builder
             ->add('username', 'text', array(
+                'label' => 'Логин',
                 'attr' => array(
                     'class' => 'form-control',
                 )

@@ -17,6 +17,7 @@ class ContentReviewType extends AbstractType
     {
         $builder
             ->add('status', 'entity', array(
+                'label' => 'Статус',
                 'class' => 'CMSBackendBundle:Statuses',
                 'property' => 'status',
                 'query_builder' => function($er) {
@@ -30,11 +31,13 @@ class ContentReviewType extends AbstractType
                 )
             ))
             ->add('tags', 'entity', array(
+                'label' => 'Тэги',
                 'class' => 'CMSBackendBundle:Tags',
                 'property' => 'name',
                 'multiple' => true
             ))
             ->add('review', 'textarea', array(
+                'label' => 'Рецензия',
                 'attr' => array(
                     'class' => 'form-control'
                 )

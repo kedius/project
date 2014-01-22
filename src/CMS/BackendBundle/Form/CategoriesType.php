@@ -16,11 +16,13 @@ class CategoriesType extends AbstractType
     {
         $builder
             ->add('title', 'text', array (
+                'label' => 'Название',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('parent', 'entity', array(
+                'label' => 'Родитель',
                 'class' => 'CMSBackendBundle:Categories',
                 'property' => 'indentedTitle',
                 'empty_value' => 'Выберите категорию',

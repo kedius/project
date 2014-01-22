@@ -17,7 +17,7 @@ sudo mv composer.phar /usr/local/bin/composer
 </pre>
 
 
-После установки composqer клонировать проект, затем зайти в папку с проектом и установить зависимости:
+После установки composer клонировать проект, затем зайти в папку с проектом и установить зависимости:
 <pre>
 git clone https://github.com/kedius/project.git (скорее всего потребует sudo, тогда воспользуйтесь sudo !!)
 cd project
