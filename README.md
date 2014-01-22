@@ -11,14 +11,20 @@
 
 Установить composer:
 
-1. curl -sS https://getcomposer.org/installer | php
-2. mv composer.phar /usr/local/bin/composer
+<pre>
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+</pre>
+
+
+После установки composqer клонировать проект, затем зайти в папку с проектом и установить зависимости:
+<pre>
+git clone https://github.com/kedius/project.git (скорее всего потребует sudo, тогда воспользуйтесь sudo !!)
+cd project
+sudo composer install
+</pre>
 
 Дамп базы находится в папке INSTALL. Там же вы найдёте и файл диаграм MySql WorkBench.
-
-После установки composqer клонировать проект, затем зайти в папку с проектом и выполнить:
-
-sudo composer install
 
 После выполнения комманды в файле app/config/parameters.yml указать параметры подключения к БД
 
