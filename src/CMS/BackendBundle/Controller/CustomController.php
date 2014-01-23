@@ -20,6 +20,9 @@ class CustomController extends Controller
 
     public function profileAction()
     {
+        if (! $this->get('security.context')->isGranted('ROLE_USER')) {
+	    return $this->redirect($this->generateUrl('_security_login'));
+	}
         return $this->render('CMSBackendBundle:Custom:profile.html.twig');
     }
 
